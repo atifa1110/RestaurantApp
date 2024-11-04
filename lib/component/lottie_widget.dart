@@ -20,6 +20,7 @@ class LottieWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       height: Sizes.screenHeight(context) * 0.6,
       child: LayoutBuilder(
@@ -38,7 +39,9 @@ class LottieWidget extends StatelessWidget {
                 Gap.h8,
                 Text(
                   description ?? "Empty",
-                  style: AppThemes.headline3.darkGrey,
+                  style: AppThemes.headline3.copyWith(
+                    color: colorScheme.onSecondaryContainer,
+                  ),
                 ),
                 Text(
                   subtitle ?? "Empty",

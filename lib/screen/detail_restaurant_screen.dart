@@ -46,10 +46,11 @@ class _RestaurantDetailPageState extends State<DetailRestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: colorScheme.onSecondary,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: colorScheme.onSecondary,
               leading: widget.isBackButtonShow ? IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
@@ -130,19 +131,25 @@ class _RestaurantDetailPageState extends State<DetailRestaurantScreen> {
                                           trimMode: TrimMode.Line,
                                           trimCollapsedText: 'Show more',
                                           trimExpandedText: 'Show less',
-                                          style: AppThemes.text2,
+                                          style: AppThemes.text2.copyWith(
+                                            color: colorScheme.onSecondaryContainer
+                                          ),
                                         ),
                                         Gap.h16,
                                         Text(
                                           'Foods',
-                                          style: AppThemes.headline3,
+                                          style: AppThemes.headline3.copyWith(
+                                              color: colorScheme.onSecondaryContainer
+                                          ),
                                         ),
                                         Gap.h8,
                                         _getFoodList(restaurant),
                                         Gap.h20,
                                         Text(
                                           'Drinks',
-                                          style: AppThemes.headline3,
+                                          style: AppThemes.headline3.copyWith(
+                                              color: colorScheme.onSecondaryContainer
+                                          ),
                                         ),
                                         Gap.h8,
                                         _getDrinkList(restaurant),
@@ -169,7 +176,9 @@ class _RestaurantDetailPageState extends State<DetailRestaurantScreen> {
                                               children: [
                                                 Text(
                                                   'Reviews',
-                                                  style: AppThemes.headline3,
+                                                  style: AppThemes.headline3.copyWith(
+                                                      color: colorScheme.onSecondaryContainer
+                                                  ),
                                                 ),
                                                 const Icon(
                                                   Icons.arrow_forward,

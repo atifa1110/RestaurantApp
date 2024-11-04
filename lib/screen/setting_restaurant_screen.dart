@@ -34,9 +34,10 @@ class SettingRestaurantScreen extends StatelessWidget{
   }
 
   Widget _buildMobileLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SafeArea(
         child: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: colorScheme.onSecondary,
             body: ListView(
               padding: const EdgeInsets.symmetric(vertical: Sizes.p16,horizontal: Sizes.p16),
               children: [
@@ -53,7 +54,9 @@ class SettingRestaurantScreen extends StatelessWidget{
                     Gap.h16,
                     Text(
                         "Atifa Fiorenza",
-                        style: AppThemes.headline3.darkGrey
+                        style: AppThemes.headline3.copyWith(
+                        color: colorScheme.onSecondaryContainer,
+                      ),
                     ),
                     Text(
                         "atifafiorenza24@gmail.com",
@@ -67,8 +70,16 @@ class SettingRestaurantScreen extends StatelessWidget{
                             shrinkWrap: true,
                             children: [
                               ListTile(
-                                title: const Text('Dark Theme'),
+                                title: Text('Dark Theme',
+                                  style: AppThemes.text1.copyWith(
+                                    color: colorScheme.onSecondaryContainer,
+                                  ),
+                                ),
                                 trailing: Switch.adaptive(
+                                  activeColor: Colors.green,
+                                  activeTrackColor: Colors.greenAccent,
+                                  inactiveThumbColor: Colors.grey,
+                                  inactiveTrackColor: Colors.black12,
                                   value: provider.isDarkTheme,
                                   onChanged: (value) {
                                     provider.setDarkTheme(value);
@@ -82,10 +93,18 @@ class SettingRestaurantScreen extends StatelessWidget{
                                 ),
                               ),
                               ListTile(
-                                title: const Text('Restaurant Notification'),
+                                title: Text('Restaurant Notification',
+                                    style: AppThemes.text1.copyWith(
+                                        color: colorScheme.onSecondaryContainer
+                                    )
+                                ),
                                 trailing: Consumer<SchedulingProvider>(
                                     builder: (context, scheduled, _) {
                                       return Switch.adaptive(
+                                        activeColor: Colors.green,
+                                        activeTrackColor: Colors.greenAccent,
+                                        inactiveThumbColor: Colors.grey,
+                                        inactiveTrackColor: Colors.black12,
                                         value: provider.isDailyReminderActive,
                                         onChanged: (value) async {
                                           if (Platform.isIOS) {

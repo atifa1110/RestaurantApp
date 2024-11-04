@@ -15,7 +15,7 @@ class ApiService {
   final String largeImageUrl = 'images/large/';
 
   Future<RestaurantListResponse> getListRestaurant() async {
-    final response = await http.get(Uri.parse('${baseUrl}list'),);
+    final response = await http.get(Uri.parse('${baseUrl}list'));
     switch (response.statusCode) {
       case 200:
         return RestaurantListResponse.fromJson(jsonDecode(response.body));

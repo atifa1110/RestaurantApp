@@ -56,7 +56,43 @@ Future<void> main() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  runApp(const MyApp());
+  runApp(
+      MultiProvider(
+          providers: [
+            ChangeNotifierProvider<RestaurantListProvider>(
+              create: (context) => RestaurantListProvider(
+                apiService: ApiService(),
+              ),
+            ),
+            ChangeNotifierProvider<SearchRestaurantProvider>(
+              create: (context) => SearchRestaurantProvider(
+                apiService: ApiService(),
+              ),
+            ),
+            ChangeNotifierProvider<DatabaseProvider>(
+                create: (context) => DatabaseProvider(
+                    databaseHelper: DatabaseHelper()
+                )
+            ),
+            ChangeNotifierProvider<PostReviewProvider>(
+                create: (context) => PostReviewProvider(
+                    apiService: ApiService()
+                )
+            ),
+            ChangeNotifierProvider(create: (_) => SchedulingProvider(),),
+            ChangeNotifierProvider(create: (_) => DetailRestaurantProvider(
+                apiService: ApiService()
+            ),),
+            ChangeNotifierProvider(create: (_) => PreferencesProvider(
+                preferencesHelper: PreferencesHelper(
+                    sharedPreferences: SharedPreferences.getInstance()
+                )
+            ),
+            ),
+          ],
+      child: const MyApp()
+      )
+  );
 }
 
 Future<void> _initializeNotifications(NotificationHelper notificationHelper) async {
@@ -77,55 +113,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<RestaurantListProvider>(
-          create: (context) => RestaurantListProvider(
-            apiService: ApiService(),
-          ),
-        ),
-        ChangeNotifierProvider<SearchRestaurantProvider>(
-          create: (context) => SearchRestaurantProvider(
-            apiService: ApiService(),
-          ),
-        ),
-        ChangeNotifierProvider<DatabaseProvider>(
-            create: (context) => DatabaseProvider(
-                databaseHelper: DatabaseHelper()
-            )
-        ),
-        ChangeNotifierProvider<PostReviewProvider>(
-            create: (context) => PostReviewProvider(
-                apiService: ApiService()
-            )
-        ),
-        ChangeNotifierProvider(
-          create: (_) => SchedulingProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => DetailRestaurantProvider(
-              apiService: ApiService()
-          ),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => PreferencesProvider(
-              preferencesHelper: PreferencesHelper(
-                  sharedPreferences: SharedPreferences.getInstance()
-              )
-          ),
-        ),
-      ],
-      child: MaterialApp.router(
+    final preferencesProvider = Provider.of<PreferencesProvider>(context);
+
+    return MaterialApp.router(
         title: 'Restaurant',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: preferencesProvider.themeData,
         debugShowCheckedModeBanner: false,
         routeInformationParser: goRouter.routeInformationParser,
         routeInformationProvider: goRouter.routeInformationProvider,
         routerDelegate: goRouter.routerDelegate,
-      ),
     );
   }
 }

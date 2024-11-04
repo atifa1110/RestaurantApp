@@ -78,9 +78,10 @@ class _FavoriteRestaurantPageState extends State<FavoriteRestaurantScreen> {
   }
 
   Widget _buildMobileLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.onSecondary,
         body:
         ListView(
             padding: const EdgeInsets.symmetric(horizontal: Sizes.p24,vertical: Sizes.p8),

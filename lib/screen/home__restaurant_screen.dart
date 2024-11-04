@@ -46,9 +46,10 @@ class _HomeScreenState  extends State<HomeScreen> {
   }
 
   Widget _buildMobileLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SafeArea(
         child: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: colorScheme.onSecondary,
             body: ListView(
                 padding: const EdgeInsets.symmetric(vertical: Sizes.p16,horizontal: Sizes.p16),
                 children: [
@@ -126,6 +127,7 @@ class _HomeScreenState  extends State<HomeScreen> {
   }
 
   Widget _buildTabletLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
         // Left side: List of restaurants
@@ -133,7 +135,7 @@ class _HomeScreenState  extends State<HomeScreen> {
           child: SafeArea(
             child: Scaffold(
               appBar: const RestaurantAppBar(), // Your custom AppBar
-              backgroundColor: Colors.white,
+              backgroundColor: colorScheme.onSecondary,
               body: ListView(
                 padding: const EdgeInsets.symmetric(vertical: Sizes.p16, horizontal: Sizes.p24),
                 children: [

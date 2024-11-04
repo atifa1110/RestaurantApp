@@ -26,11 +26,12 @@ class MainRestaurantScreen extends StatelessWidget {
   }
 
   Widget _buildMobileLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: const RestaurantAppBar(),
       body: child, // The current selected page
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.onSecondary,
         currentIndex: _calculateSelectedIndex(context),
         onTap: (int index) {
           switch (index) {
@@ -59,6 +60,9 @@ class MainRestaurantScreen extends StatelessWidget {
             label: 'Settings',
           ),
         ],
+        selectedItemColor: colorScheme.primary,
+        unselectedItemColor: colorScheme.secondary,
+        showSelectedLabels: true,
       ),
     );
   }

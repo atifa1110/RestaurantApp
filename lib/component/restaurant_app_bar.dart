@@ -8,6 +8,7 @@ class RestaurantAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return AppBar(
       title: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -16,7 +17,9 @@ class RestaurantAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Text(
               'Cozy Restaurant',
-              style: AppThemes.headline3, // Your custom headline style
+              style: AppThemes.headline3.copyWith(
+                color: colorScheme.onSecondaryContainer
+              ), // Your custom headline style
             ),
             Text(
               'Recommended restaurant for you',
@@ -25,7 +28,7 @@ class RestaurantAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ),
-      backgroundColor: Colors.white, // Optional: Customize background color
+      backgroundColor: colorScheme.onSecondary // Optional: Customize background color
     );
   }
 

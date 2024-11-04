@@ -19,11 +19,12 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextField(
       controller: controller,
       autofocus: autofocus,
       decoration: InputDecoration(
-        fillColor: AppThemes.lightGrey,
+        fillColor: colorScheme.surfaceContainerHigh,
         filled: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -40,7 +41,9 @@ class SearchField extends StatelessWidget {
             horizontal: 16, vertical: 12
         ),
         hintText: hintText,
-        hintStyle: AppThemes.text2,
+        hintStyle: AppThemes.text2.copyWith(
+          color: colorScheme.onSecondaryContainer
+        ),
       ),
       onChanged: onChanged,
       onSubmitted: onSubmitted,

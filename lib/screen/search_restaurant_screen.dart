@@ -29,12 +29,16 @@ class _SearchScreenState extends State<SearchScreen>{
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: colorScheme.onSecondary,
           appBar: AppBar(
             centerTitle: true,
-            title: Text("Search",style: AppThemes.text1.semiBold),
-            backgroundColor: Colors.white,
+            title: Text("Search",style: AppThemes.text1.copyWith(
+              color: colorScheme.onSecondaryContainer,
+              fontWeight: FontWeight.w600
+            )),
+            backgroundColor: colorScheme.onSecondary,
           ),
           body: ListView(
               padding: const EdgeInsets.symmetric(horizontal: Sizes.p16, vertical: Sizes.p8),

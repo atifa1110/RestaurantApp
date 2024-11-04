@@ -14,6 +14,7 @@ class RestaurantInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,7 +25,10 @@ class RestaurantInformation extends StatelessWidget {
             children: [
               Text(
                 restaurant.name,
-                style: AppThemes.headline2.bold,
+                style: AppThemes.headline2.copyWith(
+                    color: colorScheme.onSecondaryContainer,
+                    fontWeight: FontWeight.bold
+                ),
               ),
               Gap.h8,
               Row(
@@ -71,7 +75,10 @@ class RestaurantInformation extends StatelessWidget {
               Gap.w8,
               Text(
                 restaurant.rating.toStringAsFixed(1),
-                style: AppThemes.headline3.bold,
+                style: AppThemes.headline3.copyWith(
+                    color: AppThemes.darkGrey,
+                    fontWeight: FontWeight.bold
+                ),
               ),
             ],
           ),
