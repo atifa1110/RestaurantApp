@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../enum/state.dart';
 import '../theme/app_size.dart';
 import '../component/lottie_widget.dart';
 import '../theme/resource.dart';
 import '../component/restaurant_app_bar.dart';
 import '../component/restaurant_card.dart';
 import '../component/search_placeholder.dart';
-import '../enum/state.dart';
 import '../provider/detail_restaurant_provider.dart';
 import '../provider/restaurant_list_provider.dart';
 import '../routing/app_routes.dart';
@@ -46,10 +46,11 @@ class _HomeScreenState  extends State<HomeScreen> {
   }
 
   Widget _buildMobileLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SafeArea(
         child: Scaffold(
             appBar: const RestaurantAppBar(),
-            backgroundColor: Colors.white,
+            backgroundColor: colorScheme.onSecondary,
             body: ListView(
                 padding: const EdgeInsets.symmetric(vertical: Sizes.p16,horizontal: Sizes.p16),
                 children: [
@@ -96,12 +97,20 @@ class _HomeScreenState  extends State<HomeScreen> {
                             assets: Resources.lottieEmpty,
                             description: 'No Result',
                             subtitle: state.message,
+                            onRefresh: (){
+                              // Call the refresh method on RestaurantProvider
+                              context.read<RestaurantListProvider>().refresh();
+                            },
                           );
                         } else if (state.state == ResultState.error) {
                           return LottieWidget(
-                            assets: Resources.lottieError,
-                            description: 'No Result',
-                            subtitle: state.message,
+                              assets: Resources.lottieError,
+                              description: 'No Result',
+                              subtitle: state.message,
+                              onRefresh: (){
+                                // Call the refresh method on RestaurantProvider
+                                context.read<RestaurantListProvider>().refresh();
+                              }
                           );
                         } else {
                           return const Center(
@@ -119,6 +128,7 @@ class _HomeScreenState  extends State<HomeScreen> {
   }
 
   Widget _buildTabletLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
         // Left side: List of restaurants
@@ -126,7 +136,7 @@ class _HomeScreenState  extends State<HomeScreen> {
           child: SafeArea(
             child: Scaffold(
               appBar: const RestaurantAppBar(), // Your custom AppBar
-              backgroundColor: Colors.white,
+              backgroundColor: colorScheme.onSecondary,
               body: ListView(
                 padding: const EdgeInsets.symmetric(vertical: Sizes.p16, horizontal: Sizes.p24),
                 children: [

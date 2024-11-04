@@ -10,14 +10,17 @@ class LottieWidget extends StatelessWidget {
     required this.assets,
     this.description,
     this.subtitle,
+    this.onRefresh
   });
 
   final String assets;
   final String? description;
   final String? subtitle;
+  final VoidCallback? onRefresh;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       height: Sizes.screenHeight(context) * 0.6,
       child: LayoutBuilder(
@@ -36,13 +39,26 @@ class LottieWidget extends StatelessWidget {
                 Gap.h8,
                 Text(
                   description ?? "Empty",
-                  style: AppThemes.headline3.darkGrey,
+                  style: AppThemes.headline3.copyWith(
+                    color: colorScheme.onSecondaryContainer,
+                  ),
                 ),
                 Text(
                   subtitle ?? "Empty",
                   textAlign: TextAlign.center,
                   style: AppThemes.text1.grey,
                 ),
+                Gap.h16, // Add spacing above the button
+                if (onRefresh != null)
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppThemes.white, // Set background color
+                      foregroundColor:AppThemes.black, // Set text color
+                      textStyle: AppThemes.text1, // Set text style from AppThemes
+                    ),
+                    onPressed: onRefresh,
+                    child: Text('Refresh', style: AppThemes.text1),
+                  ),
               ],
             )
                 : Lottie.asset(

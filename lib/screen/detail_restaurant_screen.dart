@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
+import '../component/snackbar.dart';
+import '../enum/state.dart';
 import '../theme/app_size.dart';
 import '../component/lottie_widget.dart';
 import '../component/menus_card.dart';
@@ -10,7 +12,6 @@ import '../theme/resource.dart';
 import '../component/restaurant_information.dart';
 import '../data/network/api/api_service.dart';
 import '../data/network/response/response_detail_restaurant.dart';
-import '../enum/state.dart';
 import '../provider/detail_restaurant_provider.dart';
 import '../routing/app_routes.dart';
 import '../routing/extras.dart';
@@ -44,142 +45,151 @@ class _RestaurantDetailPageState extends State<DetailRestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              leading: widget.isBackButtonShow ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ) : null,
-            ),
-            body: Consumer<DetailRestaurantProvider>(
-                builder: (context, state, _) {
-                  if (state.state == ResultState.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state.state == ResultState.hasData) {
-                    var restaurant = state.result;
-                    return SingleChildScrollView(
-                        child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                  width: double.infinity,
-                                  child: Stack(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                            bottomRight: Radius.circular(Sizes.p32),
+        backgroundColor: colorScheme.onSecondary,
+        appBar: AppBar(
+          backgroundColor: colorScheme.onSecondary,
+          leading: widget.isBackButtonShow ? IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ) : null,
+        ),
+        body: Consumer<DetailRestaurantProvider>(
+            builder: (context, state, _) {
+              if (state.state == ResultState.loading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state.state == ResultState.hasData) {
+                var restaurant = state.result;
+                return SingleChildScrollView(
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                              width: double.infinity,
+                              child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        bottomRight: Radius.circular(Sizes.p32),
+                                      ),
+                                      child: AspectRatio(
+                                          aspectRatio: 4 / 3,
+                                          child: Image.network(
+                                            '${ApiService().mediumImage(restaurant.pictureId)}',
+                                            fit: BoxFit.cover,
+                                          )
+                                      ),
+                                    ),
+                                  ]
+                              )
+                          ),
+                          Gap.h12,
+                          Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RestaurantInformation(restaurant: restaurant),
+                                    Gap.h16,
+                                    ReadMoreText(
+                                      restaurant.description,
+                                      trimLines: 6,
+                                      textAlign: TextAlign.justify,
+                                      colorClickableText: AppThemes.green,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: 'Show more',
+                                      trimExpandedText: 'Show less',
+                                      style: AppThemes.text2.copyWith(
+                                          color: colorScheme.onSecondaryContainer
+                                      ),
+                                    ),
+                                    Gap.h16,
+                                    Text(
+                                      'Foods',
+                                      style: AppThemes.headline3.copyWith(
+                                          color: colorScheme.onSecondaryContainer
+                                      ),
+                                    ),
+                                    Gap.h8,
+                                    _getFoodList(restaurant),
+                                    Gap.h20,
+                                    Text(
+                                      'Drinks',
+                                      style: AppThemes.headline3.copyWith(
+                                          color: colorScheme.onSecondaryContainer
+                                      ),
+                                    ),
+                                    Gap.h8,
+                                    _getDrinkList(restaurant),
+                                    Gap.h20,
+                                    GestureDetector(
+                                      onTap: () {
+                                        context.pushNamed(
+                                          Routes.reviewCustomer.name,
+                                          extra: Extras(
+                                            extras: {
+                                              Keys.restaurantId: restaurant.id,
+                                            },
                                           ),
-                                          child: AspectRatio(
-                                              aspectRatio: 4 / 3,
-                                              child: Image.network(
-                                                '${ApiService().mediumImage(restaurant.pictureId)}',
-                                                fit: BoxFit.cover,
-                                              )
-                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: const Color(0xFFEAEAEA)),  // Border color and width
+                                          borderRadius: BorderRadius.circular(16.0),           // Rounded corners
                                         ),
-                                      ]
-                                  )
-                              ),
-                              Gap.h12,
-                              Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        RestaurantInformation(restaurant: restaurant),
-                                        Gap.h16,
-                                        ReadMoreText(
-                                          restaurant.description,
-                                          trimLines: 6,
-                                          textAlign: TextAlign.justify,
-                                          colorClickableText: AppThemes.green,
-                                          trimMode: TrimMode.Line,
-                                          trimCollapsedText: 'Show more',
-                                          trimExpandedText: 'Show less',
-                                          style: AppThemes.text2,
-                                        ),
-                                        Gap.h16,
-                                        Text(
-                                          'Foods',
-                                          style: AppThemes.headline3,
-                                        ),
-                                        Gap.h8,
-                                        _getFoodList(restaurant),
-                                        Gap.h20,
-                                        Text(
-                                          'Drinks',
-                                          style: AppThemes.headline3,
-                                        ),
-                                        Gap.h8,
-                                        _getDrinkList(restaurant),
-                                        Gap.h20,
-                                        GestureDetector(
-                                          onTap: () {
-                                            context.pushNamed(
-                                              Routes.reviewCustomer.name,
-                                              extra: Extras(
-                                                extras: {
-                                                  Keys.restaurantId: restaurant.id,
-                                                },
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Reviews',
+                                              style: AppThemes.headline3.copyWith(
+                                                  color: colorScheme.onSecondaryContainer
                                               ),
-                                            );
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(16),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(color: const Color(0xFFEAEAEA)),  // Border color and width
-                                              borderRadius: BorderRadius.circular(16.0),           // Rounded corners
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Reviews',
-                                                  style: AppThemes.headline3,
-                                                ),
-                                                const Icon(
-                                                  Icons.arrow_forward,
-                                                  color: AppThemes.green,
-                                                ),
-                                              ],
+                                            const Icon(
+                                              Icons.arrow_forward,
+                                              color: AppThemes.green,
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                        Gap.h12,
-                                      ]
-                                  )
-                              ),
-                            ]
-                        )
-                    );
-                  } else if (state.state == ResultState.noData) {
-                    return LottieWidget(
-                      assets: Resources.lottieEmpty,
-                      description: 'No Result',
-                      subtitle: state.message,
-                    );
-                  } else if (state.state == ResultState.error) {
-                    return LottieWidget(
-                      assets: Resources.lottieError,
-                      description: 'No Result',
-                      subtitle: state.message,
-                    );
-                  } else {
-                    return const Center(
-                      child: Material(
-                        child: Text('Unexpected Error'),
-                      ),
-                    );
-                  }
-                }
-            )
+                                      ),
+                                    ),
+                                    Gap.h12,
+                                  ]
+                              )
+                          ),
+                        ]
+                    )
+                );
+              } else if (state.state == ResultState.noData) {
+                return LottieWidget(
+                  assets: Resources.lottieEmpty,
+                  description: 'No Result',
+                  subtitle: state.message,
+                );
+              } else if (state.state == ResultState.error) {
+                return LottieWidget(
+                  assets: Resources.lottieError,
+                  description: 'No Result',
+                  subtitle: state.message,
+                );
+              } else {
+                return const Center(
+                  child: Material(
+                    child: Text('Unexpected Error'),
+                  ),
+                );
+              }
+            }
+        )
     );
   }
 

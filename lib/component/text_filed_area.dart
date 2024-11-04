@@ -19,16 +19,19 @@ class TextFieldArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(labelText, style: AppThemes.text1),
+        Text(labelText, style: AppThemes.text1.copyWith(
+            color: colorScheme.onSecondaryContainer
+        )),
         Gap.h8,
         TextField(
           controller: reviewController,
           decoration: InputDecoration(
-            fillColor: AppThemes.lightGrey,
+            fillColor: colorScheme.surfaceContainerHigh,
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(Sizes.p16),
@@ -40,7 +43,9 @@ class TextFieldArea extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(
                 horizontal: Sizes.p16, vertical: Sizes.p12),
             hintText: hintText,
-            hintStyle: AppThemes.text2.grey,
+            hintStyle: AppThemes.text2.copyWith(
+                color: colorScheme.onSecondaryContainer
+            ),
           ),
           maxLines: null,
           keyboardType: TextInputType.multiline,

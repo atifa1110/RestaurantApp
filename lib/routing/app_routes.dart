@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:restaurant_submission_2/screen/setting_restaurant_screen.dart';
 import '../screen/detail_restaurant_screen.dart';
 import '../screen/home__restaurant_screen.dart';
 import '../screen/review_restaurant_screen.dart';
@@ -16,7 +17,8 @@ enum Routes {
   home,
   detailRestaurant,
   searchRestaurant,
-  reviewCustomer
+  reviewCustomer,
+  settingRestaurant
 }
 
 final goRouter = GoRouter(
@@ -79,6 +81,12 @@ final goRouter = GoRouter(
                   ReviewRestaurantScreen(restaurantId: restaurantId)
               );
             }
+        ),
+        GoRoute(
+          path: 'settingRestaurant',
+          name: Routes.settingRestaurant.name,
+          pageBuilder: (context, state) =>
+              _navigate(context, state, const SettingRestaurantScreen()),
         ),
       ],
     ),

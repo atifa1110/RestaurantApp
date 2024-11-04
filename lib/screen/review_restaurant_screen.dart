@@ -3,11 +3,10 @@ import 'package:provider/provider.dart';
 import '../component/bottom_sheet_holder.dart';
 import '../component/input_filed_area.dart';
 import '../component/text_filed_area.dart';
+import '../enum/state.dart';
 import '../provider/post_review_provider.dart';
 import '../theme/app_size.dart';
 import '../component/review_card.dart';
-import '../data/network/api/api_service.dart';
-import '../enum/state.dart';
 import '../provider/detail_restaurant_provider.dart';
 import '../theme/app_theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as customBottom;
@@ -39,14 +38,17 @@ class _ReviewPageState extends State<ReviewRestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.onSecondary,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: colorScheme.onSecondary,
           centerTitle: true,
           title: Text(
             'Reviews',
-            style: AppThemes.headline3,
+            style: AppThemes.headline3.copyWith(
+                color: colorScheme.onSecondaryContainer
+            ),
           ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -128,18 +130,25 @@ class _ReviewPageState extends State<ReviewRestaurantScreen> {
     customBottom.showMaterialModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
+        final colorScheme = Theme.of(context).colorScheme;
+        final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
         return Container(
           width: double.infinity,
-          color: Colors.white,
-          padding: const EdgeInsets.all(16.0),
+          color: colorScheme.onSecondary,
+          //height: 500,
+          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, bottomPadding + 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               const BottomSheetHolder(),
               Gap.h20,
               Text(
                 'Add Review',
-                style: AppThemes.headline3,
+                style: AppThemes.headline3.copyWith(
+                    color: colorScheme.onSecondaryContainer,
+                    fontWeight: FontWeight.w600
+                ),
                 textAlign: TextAlign.start,
               ),
               Gap.h20,

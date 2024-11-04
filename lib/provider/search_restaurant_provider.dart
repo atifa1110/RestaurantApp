@@ -53,4 +53,8 @@ class SearchRestaurantProvider extends ChangeNotifier {
     _message = 'No Result';
     notifyListeners();
   }
+
+  void refresh(){
+    getSearchRestaurant("");
+  }
 }

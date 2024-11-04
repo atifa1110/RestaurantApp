@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_submission_2/data/network/model/restaurant.dart';
-
 import '../data/network/api/api_service.dart';
+import '../theme/app_size.dart';
 import '../theme/app_theme.dart';
 
 
@@ -11,11 +11,12 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: AppThemes.lightGrey,
+        color: colorScheme.surfaceContainerHigh,
       ),
       child: Row(
         children: [
@@ -45,12 +46,12 @@ class RestaurantCard extends StatelessWidget {
                     height: 35,
                     width: 60,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0,left: 4.0),
+                      padding: const EdgeInsets.only(top: 6.0,left: 4.0),
                       child: Container(
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.only(left: 4.0,right: 4.0),
                         decoration: BoxDecoration(
-                          color: AppThemes.white,
+                          color: colorScheme.onSurfaceVariant,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: AppThemes.getSmallShadow(),
                         ),
@@ -60,14 +61,17 @@ class RestaurantCard extends StatelessWidget {
                           children: [
                             const Icon(
                               Icons.star_rounded,
-                              color: AppThemes.orange,
-                              size: 12,
+                              color: Colors.yellow,
+                              size: 14,
                             ),
-                            const SizedBox(width: 8),
+                            Gap.w8,
                             Flexible(  // Added Flexible here to prevent overflow
                               child: Text(
                                 restaurant.rating.toStringAsFixed(1),
-                                style: AppThemes.subText1,
+                                style: AppThemes.text2.copyWith(
+                                  color: colorScheme.surfaceVariant,
+                                  fontWeight: FontWeight.w600
+                                ),
                                 overflow: TextOverflow.ellipsis, // Avoid text overflow
                               ),
                             ),
@@ -80,7 +84,7 @@ class RestaurantCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(width: 16),
+          Gap.w16,
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -88,28 +92,35 @@ class RestaurantCard extends StatelessWidget {
               children: [
                 Text(
                   restaurant.name,
-                  style: AppThemes.text1,
+                  style: AppThemes.text1.copyWith(
+                      color: colorScheme.onSecondaryContainer,
+                      fontWeight: FontWeight.w600
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.location_on_rounded,
-                      color: AppThemes.grey,
+                      color: colorScheme.onSecondaryContainer,
                       size: 16,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(width: 4),
                     Text(
                       restaurant.city,
-                      style: AppThemes.subText1,
+                      style: AppThemes.subText1.copyWith(
+                          color: colorScheme.onSecondaryContainer
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 Text(
                   restaurant.description,
-                  style: AppThemes.subText1,
+                  style: AppThemes.subText1.copyWith(
+                      color: colorScheme.onSecondaryContainer
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

@@ -9,6 +9,7 @@ class SearchPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final TextEditingController controller = TextEditingController();
     return GestureDetector(
       onTap: () {
@@ -20,7 +21,7 @@ class SearchPlaceholder extends StatelessWidget {
         child: TextField(
           controller: controller,
           decoration: InputDecoration(
-            fillColor: AppThemes.lightGrey,
+            fillColor: colorScheme.surfaceContainerHigh,
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -34,7 +35,9 @@ class SearchPlaceholder extends StatelessWidget {
               color: AppThemes.grey,
             ),
             hintText: hintText,
-            hintStyle: AppThemes.text2,
+            hintStyle: AppThemes.text2.copyWith(
+              color: colorScheme.onSecondaryContainer
+            ),
           ),
         ),
       ),

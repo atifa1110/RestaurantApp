@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_submission_2/theme/text_style.dart';
 import 'package:restaurant_submission_2/theme/app_size.dart';
-
 import '../theme/app_theme.dart';
 
 

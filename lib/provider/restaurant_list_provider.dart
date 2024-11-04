@@ -45,4 +45,8 @@ class RestaurantListProvider extends ChangeNotifier {
       return _message = 'Error -> $e';
     }
   }
+
+  void refresh() {
+    _getListRestaurant();
+  }
 }
