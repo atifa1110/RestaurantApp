@@ -25,8 +25,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState  extends State<HomeScreen> {
 
-  var _selectedRestaurantId; // Variable to hold the selected restaurant ID
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,11 +160,9 @@ class _HomeScreenState  extends State<HomeScreen> {
                                 var restaurant = state.restResult.restaurants[index];
                                 return GestureDetector(
                                   onTap: () {
-                                    print("Selected Restaurant Id: ${restaurant.id}");
-                                    setState(() {
-                                      // Update the selected restaurant ID
-                                      _selectedRestaurantId = restaurant.id; // Assuming restaurant has an 'id' property
-                                    });
+                                    Provider.of<RestaurantListProvider>(context, listen: false)
+                                        .selectRestaurant(restaurant.id);
+
                                     Provider.of<DetailRestaurantProvider>(context, listen: false)
                                         .refresh(restaurant.id);
                                   },
@@ -205,11 +201,14 @@ class _HomeScreenState  extends State<HomeScreen> {
         ),
         const VerticalDivider(thickness: 0.5, width: 1),
         // Right side: Display the restaurant details
-        Expanded(
-          child: _selectedRestaurantId != null
-              ? DetailRestaurantScreen(restaurantId: _selectedRestaurantId!, isBackButtonShow: false)
-              : const Center(child: Text('Select a restaurant to see details')),
-        ),
+        Consumer<RestaurantListProvider>(
+            builder: (context, state, _) {
+              return Expanded(
+                child: state.selectedRestaurantId != null
+                    ? DetailRestaurantScreen(restaurantId: state.selectedRestaurantId, isBackButtonShow: false)
+                    : const Center(child: Text('Select a restaurant to see details')),
+              );
+            })
       ],
     );
   }

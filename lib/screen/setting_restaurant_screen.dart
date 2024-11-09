@@ -114,7 +114,7 @@ class SettingRestaurantScreen extends StatelessWidget{
     return SafeArea(
         child: Scaffold(
             appBar: const RestaurantAppBar(),
-            backgroundColor: Colors.white,
+            backgroundColor: colorScheme.onSecondary,
             body: ListView(
               padding: const EdgeInsets.symmetric(vertical: Sizes.p16,horizontal: Sizes.p16),
               children: [
@@ -131,7 +131,9 @@ class SettingRestaurantScreen extends StatelessWidget{
                     Gap.h16,
                     Text(
                         "Atifa Fiorenza",
-                        style: AppThemes.headline3.darkGrey
+                        style: AppThemes.headline3.copyWith(
+                          color: colorScheme.onSecondaryContainer,
+                        )
                     ),
                     Text(
                         "atifafiorenza24@gmail.com",

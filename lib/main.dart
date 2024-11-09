@@ -7,6 +7,7 @@ import 'package:restaurant_submission_2/provider/preferences_provider.dart';
 import 'package:restaurant_submission_2/provider/restaurant_list_provider.dart';
 import 'package:restaurant_submission_2/provider/search_restaurant_provider.dart';
 import 'package:restaurant_submission_2/routing/app_routes.dart';
+import 'package:restaurant_submission_2/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data/network/api/api_service.dart';
 
@@ -52,11 +53,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final preferencesProvider = Provider.of<PreferencesProvider>(context);
+    final preferences = Provider.of<PreferencesProvider>(context);
 
     return MaterialApp.router(
       title: 'Restaurant',
-      theme: preferencesProvider.themeData,
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      themeMode: preferences.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       routeInformationParser: goRouter.routeInformationParser,
       routeInformationProvider: goRouter.routeInformationProvider,

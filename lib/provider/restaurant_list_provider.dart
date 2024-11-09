@@ -21,6 +21,14 @@ class RestaurantListProvider extends ChangeNotifier {
   ResultState get state => _state;
   String get message => _message;
 
+  String? _selectedRestaurantId;
+  String? get selectedRestaurantId => _selectedRestaurantId;
+
+  void selectRestaurant(String restaurantId) {
+    _selectedRestaurantId = restaurantId;
+    notifyListeners(); // Notify all listeners that the state has changed
+  }
+
   Future<dynamic> _getListRestaurant() async {
     try {
       _state = ResultState.loading;
