@@ -16,7 +16,7 @@ class RestaurantInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: Column(
@@ -26,9 +26,11 @@ class RestaurantInformation extends StatelessWidget {
               Text(
                 restaurant.name,
                 style: AppThemes.headline2.copyWith(
-                    color: colorScheme.onSecondaryContainer,
-                    fontWeight: FontWeight.bold
+                  color: colorScheme.onSecondaryContainer,
+                  fontWeight: FontWeight.bold,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               Gap.h8,
               Row(
