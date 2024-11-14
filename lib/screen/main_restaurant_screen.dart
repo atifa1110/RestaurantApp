@@ -60,14 +60,13 @@ class MainRestaurantScreen extends StatelessWidget {
             label: 'Settings',
           ),
         ],
-        selectedItemColor: colorScheme.primary,
-        unselectedItemColor: colorScheme.secondary,
         showSelectedLabels: true,
       ),
     );
   }
 
   Widget _buildTabletLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
         NavigationRail(
@@ -78,7 +77,7 @@ class MainRestaurantScreen extends StatelessWidget {
               print("Menu button pressed");
             },
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: colorScheme.onSecondary,
           selectedIndex: _calculateSelectedIndex(context),
           onDestinationSelected: (int index) {
             switch (index) {

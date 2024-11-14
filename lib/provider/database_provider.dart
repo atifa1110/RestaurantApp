@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_submission_3/data/network/response/response_detail_restaurant.dart';
 import '../common/state.dart';
 import '../data/local/database_helper.dart';
+import 'detail_restaurant_provider.dart';
 
 class DatabaseProvider extends ChangeNotifier {
   final DatabaseHelper databaseHelper;
@@ -8,6 +10,9 @@ class DatabaseProvider extends ChangeNotifier {
   DatabaseProvider({required this.databaseHelper}) {
     _getFavorite();
   }
+
+  List<DetailRestaurantResponse> favoriteRestaurants = [];
+  bool isLoading = false;
 
   ResultState? _state;
   String _message = '';
@@ -59,5 +64,22 @@ class DatabaseProvider extends ChangeNotifier {
   // Check if item is a favorite
   Future<bool> isFavorite(String id) async {
     return Future.value(databaseHelper.isFavorite(id)); // Wrap the bool in Future
+  }
+
+  Future<void> loadFavoriteRestaurants(DetailRestaurantProvider detailProvider, List<String> favoriteIds) async {
+    isLoading = true;
+    notifyListeners();
+
+    List<DetailRestaurantResponse> fetchedRestaurants = [];
+    for (var id in favoriteIds) {
+      await detailProvider.getRestaurantById(id);
+      if (detailProvider.state == ResultState.hasData) {
+        fetchedRestaurants.add(detailProvider.result);
+      }
+    }
+
+    favoriteRestaurants = fetchedRestaurants;
+    isLoading = false;
+    notifyListeners();
   }
 }

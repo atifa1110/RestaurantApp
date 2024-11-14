@@ -16,6 +16,7 @@ import 'package:restaurant_submission_3/provider/restaurant_list_provider.dart';
 import 'package:restaurant_submission_3/provider/schedule_provider.dart';
 import 'package:restaurant_submission_3/provider/search_restaurant_provider.dart';
 import 'package:restaurant_submission_3/routing/app_routes.dart';
+import 'package:restaurant_submission_3/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -113,15 +114,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final preferencesProvider = Provider.of<PreferencesProvider>(context);
+    final preferences = Provider.of<PreferencesProvider>(context);
 
     return MaterialApp.router(
-        title: 'Restaurant',
-        theme: preferencesProvider.themeData,
-        debugShowCheckedModeBanner: false,
-        routeInformationParser: goRouter.routeInformationParser,
-        routeInformationProvider: goRouter.routeInformationProvider,
-        routerDelegate: goRouter.routerDelegate,
+      title: 'Restaurant',
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      themeMode: preferences.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+      debugShowCheckedModeBanner: false,
+      routeInformationParser: goRouter.routeInformationParser,
+      routeInformationProvider: goRouter.routeInformationProvider,
+      routerDelegate: goRouter.routerDelegate,
     );
   }
 }

@@ -29,8 +29,9 @@ class _SplashPageState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: AppThemes.scaffoldColor,
+      backgroundColor: colorScheme.onSecondary,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

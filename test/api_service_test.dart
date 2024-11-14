@@ -54,6 +54,50 @@ void main() {
       expect(result.restaurants[0].name, "Melting Pot");
     });
 
+    test('return a throw exception if the HTTP response is an error 404', () async {
+      // Arrange
+      final responseJson = jsonEncode({
+        "error": true,
+        "message": "Not Found"
+      });
+
+      // setup the mock client
+      when(mockClient.get(any)).thenAnswer(
+            (_) async => http.Response(responseJson, 404),
+      );
+
+      expect(
+            () async => await ApiServiceMock().getListRestaurant(mockClient),
+        throwsA(
+          predicate((e) =>
+          e is Exception &&
+              e.toString() == 'Exception: Not Found: The restaurant is empty'),
+        ),
+      );
+    });
+
+    test('return a throw exception if the HTTP response is an error 500', () async {
+      // Arrange
+      final responseJson = jsonEncode({
+        "error": true,
+        "message": "Internal Server Error"
+      });
+
+      // setup the mock client
+      when(mockClient.get(any)).thenAnswer(
+            (_) async => http.Response(responseJson, 500),
+      );
+
+      expect(
+            () async => await ApiServiceMock().getListRestaurant(mockClient),
+        throwsA(
+          predicate((e) =>
+          e is Exception &&
+              e.toString() == 'Exception: Internal Server Error: Something went wrong on the server.'),
+        ),
+      );
+    });
+
     test('return a search response if the http call completes successfully', () async {
       // Arrange
       final responseJson = jsonEncode({

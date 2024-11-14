@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../common/state.dart';
 import '../theme/app_size.dart';
 import '../component/lottie_widget.dart';
+import '../theme/app_theme.dart';
 import '../theme/resource.dart';
 import '../component/restaurant_app_bar.dart';
 import '../component/restaurant_card.dart';
@@ -24,8 +25,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState  extends State<HomeScreen> {
-
-  var _selectedRestaurantId; // Variable to hold the selected restaurant ID
 
   @override
   Widget build(BuildContext context) {
@@ -162,10 +161,7 @@ class _HomeScreenState  extends State<HomeScreen> {
                                 return GestureDetector(
                                   onTap: () {
                                     print("Selected Restaurant Id: ${restaurant.id}");
-                                    setState(() {
-                                      // Update the selected restaurant ID
-                                      _selectedRestaurantId = restaurant.id; // Assuming restaurant has an 'id' property
-                                    });
+                                    context.read<RestaurantListProvider>().selectRestaurant(restaurant.id);
                                     Provider.of<DetailRestaurantProvider>(context, listen: false)
                                         .refresh(restaurant.id);
                                   },
@@ -204,11 +200,24 @@ class _HomeScreenState  extends State<HomeScreen> {
         ),
         const VerticalDivider(thickness: 0.5, width: 1),
         // Right side: Display the restaurant details
-        Expanded(
-          child: _selectedRestaurantId != null
-              ? DetailRestaurantScreen(restaurantId: _selectedRestaurantId!, isBackButtonShow: false)
-              : const Center(child: Text('Select a restaurant to see details')),
-        ),
+        Consumer<RestaurantListProvider>(
+            builder: (context, state, _) {
+              return Expanded(
+                child: state.selectedRestaurantId != null
+                    ? DetailRestaurantScreen(restaurantId: state.selectedRestaurantId, isBackButtonShow: false)
+                    : Container(
+                  color: colorScheme.onSecondary, // Set your desired background color here
+                  child: Center(
+                    child: Text(
+                      'Select a restaurant to see details',
+                      style: AppThemes.headline3.copyWith(
+                          color: colorScheme.onSecondaryContainer
+                      )
+                    ),
+                  ),
+                ),
+              );
+            })
       ],
     );
   }

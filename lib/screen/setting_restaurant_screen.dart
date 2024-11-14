@@ -137,10 +137,11 @@ class SettingRestaurantScreen extends StatelessWidget{
   }
 
   Widget _buildTabletLayout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SafeArea(
         child: Scaffold(
             appBar: const RestaurantAppBar(),
-            backgroundColor: Colors.white,
+            backgroundColor: colorScheme.onSecondary,
             body: ListView(
               padding: const EdgeInsets.symmetric(vertical: Sizes.p16,horizontal: Sizes.p16),
               children: [
@@ -156,13 +157,16 @@ class SettingRestaurantScreen extends StatelessWidget{
                     ),
                     Gap.h16,
                     Text(
-                        "Atifa Fiorenza",
-                        style: AppThemes.headline3.darkGrey
+                      "Atifa Fiorenza",
+                      style: AppThemes.headline3.copyWith(
+                        color: colorScheme.onSecondaryContainer,
+                      ),
                     ),
                     Text(
                         "atifafiorenza24@gmail.com",
                         style: AppThemes.text1.grey
                     ),
+                    Gap.h16,
                     Consumer<PreferencesProvider>(
                         builder: (context, provider, child) {
                           return ListView(
@@ -170,10 +174,41 @@ class SettingRestaurantScreen extends StatelessWidget{
                             shrinkWrap: true,
                             children: [
                               ListTile(
-                                title: const Text('Daily Reminder'),
+                                title: Text('Dark Theme',
+                                  style: AppThemes.text1.copyWith(
+                                    color: colorScheme.onSecondaryContainer,
+                                  ),
+                                ),
+                                trailing: Switch.adaptive(
+                                  activeColor: Colors.green,
+                                  activeTrackColor: Colors.greenAccent,
+                                  inactiveThumbColor: Colors.grey,
+                                  inactiveTrackColor: Colors.black12,
+                                  value: provider.isDarkTheme,
+                                  onChanged: (value) {
+                                    provider.setDarkTheme(value);
+
+                                    if(value){
+                                      Snackbar.show(context, 'Dark Theme has been on');
+                                    }else{
+                                      Snackbar.show(context, 'Dark Theme has been off');
+                                    }
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                title: Text('Restaurant Notification',
+                                    style: AppThemes.text1.copyWith(
+                                        color: colorScheme.onSecondaryContainer
+                                    )
+                                ),
                                 trailing: Consumer<SchedulingProvider>(
                                     builder: (context, scheduled, _) {
                                       return Switch.adaptive(
+                                        activeColor: Colors.green,
+                                        activeTrackColor: Colors.greenAccent,
+                                        inactiveThumbColor: Colors.grey,
+                                        inactiveTrackColor: Colors.black12,
                                         value: provider.isDailyReminderActive,
                                         onChanged: (value) async {
                                           if (Platform.isIOS) {
